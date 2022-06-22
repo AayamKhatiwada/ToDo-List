@@ -4,7 +4,7 @@ import { useState } from 'react';
 function App() {
   // Create a "close" button and append it to each list item
   const [ count , change ] = useState('');
-  
+
 
   return (
     <div className="App">
@@ -12,7 +12,6 @@ function App() {
         <h2>My To Do List</h2>
         <input type="text" id="myInput" placeholder="Title..." />
         <span onclick="newElement()" className="addBtn">Add</span>
-        <span>{myNodelist.length}</span>
       </div>
 
       <ul id="myUL">

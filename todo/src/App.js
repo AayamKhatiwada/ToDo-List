@@ -1,30 +1,51 @@
+import React, { useState } from 'react';
+import TodoForm from './TodoForm';
+import Todo from './Todo';
 import './App.css';
-import { useState } from 'react';
 
 function App() {
-  // Create a "close" button and append it to each list item
-  const [ count , change ] = useState('');
+    const [todos, setTodos] = useState ([]);
 
+    const addTodo = todo => {
+        if(!todo.text || /^\s*$/.test(todo.text)) {
+            return
+        }
 
-  return (
-    <div className="App">
-      <div id="myDIV" className="header">
-        <h2>My To Do List</h2>
-        <input type="text" id="myInput" placeholder="Title..." />
-        <span onclick="newElement()" className="addBtn">Add</span>
-      </div>
+        const newTodos = [todo, ...todos];
 
-      <ul id="myUL">
-        <li>Hit the gym</li>
-        <li class="checked">Pay bills</li>
-        <li>Meet George</li>
-        <li>Buy eggs</li>
-        <li>Read a book</li>
-        <li>Organize office</li>
-      </ul>
+        setTodos(newTodos);        
+    };
 
-    </div>
-  );
+    const updateTodo = (todoId, newValue) => {
+        if (!newValue.text || /^\s*$/.test(newValue.text)) {
+            return;
+        }
+        setTodos(prev => prev.map(item => (item.id === todoId ? newValue : item)));
+    }
+
+    const removeTodo = id => {
+        const removeArr = [...todos].filter(todo => todo.id !== id)
+
+        setTodos(removeArr);
+    }
+
+    const completeTodo = id => {
+        let updatedTodos = todos.map(todo => {
+            if (todo.id === id) {
+                todo.isComplete = !todo.isComplete;
+            }
+            return todo;
+        });
+        setTodos (updatedTodos);
+    }
+
+    return (
+        <div className='body'>
+            <h1>What's the Plan for Today?</h1>
+            <TodoForm onSubmit={addTodo} />
+            <Todo todos={todos} completeTodo={completeTodo} removeTodo={removeTodo} updateTodo={updateTodo} />
+        </div>
+    )
 }
 
 export default App;
